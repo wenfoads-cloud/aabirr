@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>أعبر</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@500;700;800&family=Tajawal:wght@400;500;700&display=swap">
+<style>
+:root{
+  --navy:#222B54; --gold:#E0A91F; --cream:#FFF8E7; --ink:#1F2A37; --muted:#58626F; --line:#EADFC2;
+  --c1:#C73E31; --c1s:#FFE3DE;
+  --c2:#0B7A70; --c2s:#D8F3EF;
+  --c3:#6A48C9; --c3s:#E9E2FA;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Tajawal',system-ui,sans-serif;font-size:16px;line-height:1.5}
+h1,h2,h3{font-family:'Baloo Bhaijaan 2','Tajawal',sans-serif;margin:0}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* header */
+header{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+.brand{display:flex;align-items:center;gap:12px}
+.brand img{width:52px;height:52px;border-radius:12px}
+.brand span{font-weight:700;color:var(--navy);font-size:15px}
+.pill{background:#fff;border:2px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;color:var(--muted)}
+
+/* hero */
+.hero{position:relative;text-align:center;padding:28px 0 36px;overflow:hidden}
+.hero h1{font-size:clamp(72px,16vw,132px);font-weight:800;color:var(--navy);line-height:1.05;position:relative;display:inline-block}
+.hero h1::after{content:"";position:absolute;inset-inline:6%;bottom:8%;height:14px;background:var(--gold);border-radius:99px;z-index:-1;opacity:.85}
+.hero p{margin:10px auto 0;max-width:560px;font-size:19px;color:var(--muted)}
+.deco{position:absolute;pointer-events:none}
+
+/* teachers */
+.teachers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:8px}
+.tcard{position:relative;background:#fff;border:3px solid var(--line);border-radius:24px;padding:18px;display:flex;align-items:center;gap:14px;transition:transform .15s,border-color .15s}
+.tcard:hover{transform:translateY(-3px)}
+.tcard.on{border-color:var(--tc)}
+.tmain{all:unset;display:flex;align-items:center;gap:14px;flex:1;min-width:0;cursor:pointer;border-radius:16px}
+.tmain:focus-visible,.up:focus-visible,.chip:focus-visible,.btn:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+.avatar{width:60px;height:60px;border-radius:50%;background:var(--tcs);display:flex;align-items:center;justify-content:center;flex:none}
+.tname{font-family:'Baloo Bhaijaan 2';font-weight:700;font-size:20px;color:var(--tc);line-height:1.2}
+.tcount{font-size:14px;color:var(--muted)}
+.up{flex:none;width:52px;height:52px;border-radius:50%;border:0;background:var(--tc);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.up:active{transform:translateY(3px);box-shadow:none}
+
+/* filters */
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:28px 0 18px}
+.bar h2{font-size:26px;color:var(--navy);margin-inline-end:auto}
+.chip{border:2px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:8px 16px;font-weight:500;display:flex;align-items:center;gap:8px}
+.chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+
+/* gallery */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;padding-bottom:48px}
+.card{background:#fff;border:3px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column}
+.thumb{aspect-ratio:4/3;background:#FBF4DD;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:contain;background:#fff}
+.thumb.audio{background:var(--tcs)}
+.bars{display:flex;align-items:center;gap:5px;height:70px}
+.bars i{display:block;width:7px;border-radius:9px;background:var(--tc)}
+.kind{position:absolute;top:10px;inset-inline-start:10px;background:#fff;border-radius:999px;padding:3px 10px 3px 8px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;color:var(--navy)}
+.cbody{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px}
+.student{font-family:'Baloo Bhaijaan 2';font-weight:700;font-size:20px;color:var(--navy);line-height:1.2}
+.meta{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:13px;font-weight:700;padding:2px 10px;border-radius:999px;background:var(--tcs);color:var(--tc)}
+.tag.g{background:#FFF1C7;color:#6B4E00}
+audio{width:100%;height:40px}
+.del{align-self:flex-start;border:0;background:none;color:var(--muted);font-size:13px;text-decoration:underline;padding:2px 0}
+.del.sure{color:#B42318;font-weight:700}
+.sample{border-style:dashed;opacity:.92}
+.empty-note{grid-column:1/-1;text-align:center;color:var(--muted);font-size:17px;padding:6px 0 0}
+
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(34,43,84,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:10}
+.ov.open{display:flex}
+.modal{background:#fff;border-radius:28px;width:100%;max-width:480px;max-height:92vh;overflow:auto;padding:26px;border:4px solid var(--tc)}
+.modal h2{font-size:26px;color:var(--tc)}
+.field{margin-top:16px}
+.field>label,.field>.lab{display:block;font-weight:700;margin-bottom:6px;color:var(--navy)}
+input[type=text]{width:100%;height:48px;border:2px solid var(--line);border-radius:14px;padding:0 14px;font:inherit;background:#fff}
+input[type=text]:focus{outline:3px solid var(--navy);outline-offset:1px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.tile{flex:1;min-width:90px;border:2px solid var(--line);background:#fff;border-radius:14px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:500;color:var(--ink)}
+.tile[aria-pressed="true"]{border-color:var(--tc);background:var(--tcs);color:var(--tc);font-weight:700}
+.drop{display:flex;align-items:center;justify-content:center;gap:10px;min-height:84px;border:3px dashed var(--tc);border-radius:18px;background:var(--tcs);color:var(--tc);font-weight:700;cursor:pointer;text-align:center;padding:10px}
+.drop{position:relative;flex:1;min-width:130px;flex-direction:column}
+.drop input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
+.drop.sel{background:var(--tc);color:#fff}
+.drop:focus-within{outline:3px solid var(--navy);outline-offset:3px}
+.preview{margin-top:10px;max-height:160px;border-radius:12px;display:none;max-width:100%}
+.actions{display:flex;gap:10px;margin-top:22px}
+.btn{height:50px;border-radius:16px;border:0;font-weight:700;font-size:17px;padding:0 22px}
+.btn.main{background:var(--tc);color:#fff;flex:1}
+.btn.main:disabled{opacity:.55;cursor:default}
+.btn.ghost{background:#fff;border:2px solid var(--line);color:var(--ink)}
+.msg{margin-top:12px;font-weight:500;color:#B42318;min-height:1.5em}
+input[type=text],input[type=password],input[type=search]{width:100%;height:48px;border:2px solid var(--line);border-radius:14px;padding:0 14px;font:inherit;background:#fff}
+input[type=password]{text-align:center;letter-spacing:8px;font-size:22px}
+input:focus{outline:3px solid var(--navy);outline-offset:1px}
+.search{position:relative;margin:26px 0 0}
+.search svg{position:absolute;top:13px;inset-inline-start:16px;color:var(--muted)}
+.search input{height:52px;border-radius:999px;padding-inline-start:48px;font-size:17px}
+.perr{margin-top:10px;min-height:1.5em;font-weight:700;color:#B42318}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:0 0 32px}
+
+@media (max-width:720px){
+  .teachers{grid-template-columns:1fr}
+  .bar h2{flex-basis:100%}
+}
+@media (prefers-reduced-motion:reduce){.tcard{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><img src="logo.jpg" alt="شعار المدرسة" onerror="this.style.display='none'"><span>TNIS</span></div>
+    <span class="pill">الصفوف الثالث · الرابع · الخامس</span>
+  </header>
+
+  <section class="hero">
+    <svg class="deco" style="top:18px;inset-inline-start:4%" width="64" height="64" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" fill="#E0A91F"/></svg>
+    <svg class="deco" style="top:70px;inset-inline-end:6%" width="48" height="48" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" fill="#6A48C9"/></svg>
+    <svg class="deco" style="bottom:26px;inset-inline-start:12%" width="40" height="40" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="#C73E31"/></svg>
+    <svg class="deco" style="bottom:40px;inset-inline-end:14%" width="54" height="54" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l3-1 11-11-2-2L5 17z" fill="#0B7A70"/><path d="M16 6l2 2 1.5-1.5a1.4 1.4 0 0 0 0-2l-.1-.1a1.4 1.4 0 0 0-2 0z" fill="#222B54"/></svg>
+    <h1>أعبر</h1>
+    <p>مساحة طالباتنا للتعبير: خطوط جميلة، وصور، وأصوات</p>
+  </section>
+
+  <section class="teachers" id="teachers" aria-label="المعلمات"></section>
+
+  <div class="search"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></svg><input type="search" id="q" aria-label="بحث باسم الطالبة" placeholder="ابحثي باسم الطالبة..." autocomplete="off"></div>
+
+  <div class="bar">
+    <h2>معرض الأعمال</h2>
+    <button class="chip" data-kind="all" aria-pressed="true">الكل</button>
+    <button class="chip" data-kind="photo" aria-pressed="false">صور</button>
+    <button class="chip" data-kind="audio" aria-pressed="false">أصوات</button>
+  </div>
+
+  <section class="grid" id="grid" aria-live="polite"></section>
+  <footer>أعبر · مدرسة TNIS</footer>
+</div>
+
+<div class="ov" id="pov" role="dialog" aria-modal="true" aria-labelledby="ptitle">
+  <form class="modal" id="pmodal" style="max-width:380px">
+    <h2 id="ptitle">كلمة السر</h2>
+    <p style="margin:8px 0 0;color:var(--muted)">للمعلمة فقط. اكتبي كلمة السر للمتابعة.</p>
+    <div class="field"><input type="password" id="pin" inputmode="numeric" autocomplete="off" aria-label="كلمة السر"></div>
+    <div class="perr" id="perr" role="status"></div>
+    <div class="actions"><button type="submit" class="btn main">دخول</button><button type="button" class="btn ghost" id="pcancel">إلغاء</button></div>
+  </form>
+</div>
+
+<div class="ov" id="ov" role="dialog" aria-modal="true" aria-labelledby="mtitle">
+  <form class="modal" id="form">
+    <h2 id="mtitle">رفع عمل جديد</h2>
+    <div class="field"><label for="student">اسم الطالبة</label><input type="text" id="student" maxlength="40" autocomplete="off" placeholder="اكتبي الاسم هنا"></div>
+    <div class="field"><span class="lab">الصف</span>
+      <div class="row" id="grades"></div></div>
+    <div class="field"><span class="lab">اختاري العمل</span>
+      <div class="row">
+        <div class="drop" id="dropP"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="11" r="1.8"/><path d="M4 18l5-4 4 3 3-2 4 3"/></svg><span id="txtP">صورة</span><input type="file" id="fileP" accept="image/*" aria-label="اختيار صورة"></div>
+        <div class="drop" id="dropA"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span id="txtA">صوت</span><input type="file" id="fileA" accept="audio/*,.mp3,.m4a,.wav,.aac,.ogg" aria-label="اختيار ملف صوت"></div>
+      </div>
+      <img class="preview" id="preview" alt="معاينة العمل">
+    </div>
+    <div class="msg" id="msg" role="status"></div>
+    <div class="actions"><button type="submit" class="btn main" id="save">حفظ العمل</button><button type="button" class="btn ghost" id="cancel">إلغاء</button></div>
+  </form>
+</div>
+
+<script>
+<script>
+const T=[
+  {id:'t1',name:'أسماء الفلاج',gr:['5'],c:'var(--c1)',s:'var(--c1s)'},
+  {id:'t2',name:'لطيفة الشمري',gr:['3','4'],c:'var(--c2)',s:'var(--c2s)'},
+  {id:'t3',name:'وئام الوشيل',gr:['3'],c:'var(--c3)',s:'var(--c3s)'}
+];
+const KIND={photo:'صورة',audio:'صوت'};
+const GRADE={3:'الصف الثالث',4:'الصف الرابع',5:'الصف الخامس'};
+const ICON={
+  photo:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="11" r="1.8"/><path d="M4 18l5-4 4 3 3-2 4 3"/></svg>',
+  audio:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>'
+};
+const PLUS='<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+const PENCIL='<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l3-1 11-11-2-2L5 17z"/><path d="M14 6l2 2"/></svg>';
+
+let fQ='',works=[],fTeacher='all',fKind='all',loadErr=false,loaded=false;
+let cur={t:'t1',g:'3',k:'photo',file:null},sure=null,pw='';
+const MAX_BYTES=25*1024*1024;
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const tOf=id=>T.find(t=>t.id===id)||T[0];
+const sty=t=>`--tc:${t.c};--tcs:${t.s}`;
+const norm=x=>String(x||'').replace(/[ً-ْـ]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').toLowerCase().trim();
+
+/* API */
+async function api(name,body){
+  const opt=body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{};
+  const r=await fetch('/api/'+name,opt);
+  let d={};try{d=await r.json()}catch(e){}
+  if(!r.ok)throw Object.assign(new Error(d.error||'خطأ'),{status:r.status});
+  return d;
+}
+async function load(){
+  try{works=(await api('works')).works;loadErr=false}catch(e){loadErr=true}
+  loaded=true;render();
+}
+
+/* render */
+function renderTeachers(){
+  $('#teachers').innerHTML=T.map(t=>{
+    const n=works.filter(w=>w.teacher===t.id).length;
+    return `<div class="tcard ${fTeacher===t.id?'on':''}" style="${sty(t)}">
+      <button class="tmain" data-t="${t.id}" aria-pressed="${fTeacher===t.id}">
+        <span class="avatar" style="color:${t.c}">${PENCIL}</span>
+        <span><div class="tname">${t.name}</div><div class="tcount">${t.gr.map(g=>GRADE[g]).join(' و')}</div><div class="tcount">${n} ${n===1?'عمل':'أعمال'}</div></span>
+      </button>
+      <button class="up" data-up="${t.id}" aria-label="رفع عمل من ${t.name}">${PLUS}</button>
+    </div>`;
+  }).join('');
+}
+function bars(seed){
+  let h='';for(let i=0;i<18;i++){const v=18+Math.abs(Math.sin(i*1.7+seed))*46;h+=`<i style="height:${v|0}px"></i>`}
+  return `<div class="bars" aria-hidden="true">${h}</div>`;
+}
+function card(w,i){
+  const t=tOf(w.teacher),isA=w.kind==='audio';
+  const media=isA?`<div class="thumb audio">${bars(i)}<span class="kind">${ICON.audio}${KIND.audio}</span></div>`
+    :`<div class="thumb"><img src="${esc(w.url)}" alt="صورة الطالبة ${esc(w.student)}" loading="lazy"><span class="kind">${ICON.photo}${KIND.photo}</span></div>`;
+  const del=sure===w.id?`<button class="del sure" data-del="${w.id}">تأكيد الحذف</button>`:`<button class="del" data-ask="${w.id}">حذف</button>`;
+  return `<article class="card" style="${sty(t)}">${media}<div class="cbody">
+    <div class="student">${esc(w.student)}</div>
+    <div class="meta"><span class="tag g">${GRADE[w.grade]||''}</span><span class="tag">${t.name}</span></div>
+    ${isA?`<audio controls preload="none" src="${esc(w.url)}"></audio>`:''}${del}</div></article>`;
+}
+function renderGrid(){
+  const g=$('#grid');
+  if(!loaded){g.innerHTML='<p class="empty-note">جارٍ التحميل...</p>';return}
+  if(loadErr){g.innerHTML='<p class="empty-note">تعذّر تحميل الأعمال. حاولي مرة أخرى لاحقًا.</p>';return}
+  const list=works.filter(w=>(fTeacher==='all'||w.teacher===fTeacher)&&(fKind==='all'||w.kind===fKind)&&(!fQ||norm(w.student).includes(fQ)))
+    .sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+  if(!works.length){g.innerHTML='<p class="empty-note">لا توجد أعمال بعد. اضغطي على علامة + عند اسم المعلمة لإضافة أول عمل.</p>';return}
+  g.innerHTML=list.length?list.map(card).join(''):'<p class="empty-note">'+(fQ?'ما لقينا طالبة بهذا الاسم.':'لا توجد أعمال في هذا القسم بعد.')+'</p>';
+}
+function render(){renderTeachers();renderGrid();
+  document.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.kind===fKind)));}
+
+/* events */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  if(b.dataset.kind){fKind=b.dataset.kind;sure=null;render()}
+  else if(b.dataset.t){fTeacher=fTeacher===b.dataset.t?'all':b.dataset.t;render()}
+  else if(b.dataset.up){askPass(b.dataset.up,()=>openModal(b.dataset.up))}
+  else if(b.dataset.ask){const w=works.find(x=>x.id===b.dataset.ask);if(w)askPass(w.teacher,()=>{sure=w.id;renderGrid()})}
+  else if(b.dataset.del){removeWork(b.dataset.del)}
+  else if(b.dataset.g&&b.closest('#grades')){cur.g=b.dataset.g;tiles()}
+});
+function tiles(){
+  const t=tOf(cur.t);
+  $('#grades').innerHTML=t.gr.map(g=>`<button type="button" class="tile" data-g="${g}" aria-pressed="${g===cur.g}">${GRADE[g].replace('الصف ','')}</button>`).join('');
+}
+function openModal(tid){
+  cur={t:tid,g:tOf(tid).gr[0],k:'photo',file:null};tiles();
+  const t=tOf(tid);$('.modal').style.cssText=sty(t);
+  $('#student').value='';$('#fileP').value='';$('#fileA').value='';$('#msg').textContent='';
+  $('#preview').style.display='none';picked();
+  $('#save').disabled=false;$('#save').textContent='حفظ العمل';
+  $('#mtitle').textContent='رفع عمل · '+t.name;
+  $('#ov').classList.add('open');$('#student').focus();
+}
+
+/* password (verified on the server) */
+let passCb=null,passT=null;
+function askPass(tid,cb){
+  passT=tid;passCb=cb;const t=tOf(tid);
+  $('#pmodal').style.cssText='max-width:380px;'+sty(t);
+  $('#ptitle').textContent='كلمة سر '+t.name;
+  $('#pin').value='';$('#perr').textContent='';
+  $('#pov').classList.add('open');$('#pin').focus();
+}
+$('#pmodal').onsubmit=async e=>{
+  e.preventDefault();
+  const btn=e.target.querySelector('.btn.main'),v=$('#pin').value.trim();
+  if(!v)return;
+  btn.disabled=true;
+  try{
+    await api('verify',{teacher:passT,password:v});
+    pw=v;$('#pov').classList.remove('open');const cb=passCb;passCb=null;if(cb)cb();
+  }catch(err){
+    $('#perr').textContent=err.status===401?'كلمة السر غير صحيحة':(err.status===429?'محاولات كثيرة، انتظري قليلًا':'تعذّر الاتصال، حاولي مرة أخرى');
+    $('#pin').value='';$('#pin').focus();
+  }
+  btn.disabled=false;
+};
+function closePass(){$('#pov').classList.remove('open');passCb=null}
+$('#pcancel').onclick=closePass;
+$('#pov').addEventListener('click',e=>{if(e.target.id==='pov')closePass()});
+$('#q').addEventListener('input',e=>{fQ=norm(e.target.value);renderGrid()});
+function closeModal(){$('#ov').classList.remove('open');pw=''}
+$('#cancel').onclick=closeModal;
+$('#ov').addEventListener('click',e=>{if(e.target.id==='ov')closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closePass()}});
+
+/* file picking */
+function picked(){
+  $('#dropP').classList.toggle('sel',cur.k==='photo'&&!!cur.file);
+  $('#dropA').classList.toggle('sel',cur.k==='audio'&&!!cur.file);
+  $('#txtP').textContent=cur.k==='photo'&&cur.file?'تم اختيار الصورة':'صورة';
+  $('#txtA').textContent=cur.k==='audio'&&cur.file?'تم اختيار الصوت':'صوت';
+}
+function pick(e,kind){
+  const f=e.target.files[0];if(!f)return;
+  cur.file=f;cur.k=kind;
+  (kind==='photo'?$('#fileA'):$('#fileP')).value='';
+  const p=$('#preview');
+  if(kind==='photo'){p.src=URL.createObjectURL(f);p.style.display='block'}else p.style.display='none';
+  $('#msg').textContent=f.name;$('#msg').style.color='var(--muted)';
+  picked();
+}
+$('#fileP').onchange=e=>pick(e,'photo');
+$('#fileA').onchange=e=>pick(e,'audio');
+
+/* shrink big photos before upload (falls back to the original file) */
+async function shrink(file){
+  try{
+    if(!/^image\/(jpeg|png|webp)$/.test(file.type))return file;
+    const bmp=await createImageBitmap(file);
+    const k=Math.min(1,1600/Math.max(bmp.width,bmp.height));
+    if(k===1&&file.size<1.5e6)return file;
+    const c=document.createElement('canvas');c.width=Math.round(bmp.width*k);c.height=Math.round(bmp.height*k);
+    c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
+    const blob=await new Promise(r=>c.toBlob(r,'image/jpeg',.85));
+    return blob&&blob.size<file.size?new File([blob],'work.jpg',{type:'image/jpeg'}):file;
+  }catch(e){return file}
+}
+
+$('#form').onsubmit=async e=>{
+  e.preventDefault();const m=$('#msg');m.style.color='#B42318';
+  const name=$('#student').value.trim();
+  if(!name){m.textContent='اكتبي اسم الطالبة أولاً';return}
+  if(!cur.file){m.textContent='اختاري ملف العمل';return}
+  $('#save').disabled=true;$('#save').textContent='جارٍ الحفظ...';m.textContent='';
+  try{
+    const file=cur.k==='photo'?await shrink(cur.file):cur.file;
+    if(file.size>MAX_BYTES)throw Object.assign(new Error('الملف كبير جدًا (الحد 25 ميجابايت)'),{status:413});
+    const up=await api('upload-url',{teacher:cur.t,password:pw,kind:cur.k,contentType:file.type,name:file.name});
+    const fd=new FormData();fd.append('cacheControl','31536000');fd.append('',file);
+    const r=await fetch(up.signedUrl,{method:'PUT',headers:{'x-upsert':'false'},body:fd});
+    if(!r.ok)throw new Error('فشل رفع الملف');
+    await api('work-create',{teacher:cur.t,password:pw,id:up.id,path:up.path,grade:cur.g,kind:cur.k,student:name});
+    closeModal();await load();
+  }catch(err){
+    m.textContent=err.status===401?'كلمة السر غير صحيحة':(err.message||'تعذّر الحفظ، حاولي مرة أخرى');
+    $('#save').disabled=false;$('#save').textContent='حفظ العمل';
+  }
+};
+
+async function removeWork(id){
+  const w=works.find(x=>x.id===id);sure=null;
+  if(!w)return;
+  try{await api('work-delete',{id,password:pw});pw=''}catch(e){alert(e.status===401?'كلمة السر غير صحيحة':'تعذّر الحذف')}
+  await load();
+}
+
+render();load();
+</script>
+</body>
+</html>
