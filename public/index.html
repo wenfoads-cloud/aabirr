@@ -346,11 +346,10 @@ $('#form').onsubmit=async e=>{
   try{
     const file=cur.k==='photo'?await shrink(cur.file):cur.file;
     if(file.size>MAX_BYTES)throw Object.assign(new Error('الملف كبير جدًا (الحد 25 ميجابايت)'),{status:413});
-    const up=await api('upload-url',{teacher:cur.t,password:pw,kind:cur.k,contentType:file.type,name:file.name});
-    const fd=new FormData();fd.append('cacheControl','31536000');fd.append('',file);
-    const r=await fetch(up.signedUrl,{method:'PUT',headers:{'x-upsert':'false'},body:fd});
-    if(!r.ok)throw new Error('فشل رفع الملف');
-    await api('work-create',{teacher:cur.t,password:pw,id:up.id,path:up.path,grade:cur.g,kind:cur.k,student:name});
+    const r=await fetch('/api/upload',{method:'POST',body:file,headers:{
+      'Content-Type':file.type||'application/octet-stream','X-Teacher':cur.t,'X-Password':encodeURIComponent(pw),
+      'X-Kind':cur.k,'X-Grade':cur.g,'X-Student':encodeURIComponent(name),'X-Filename':encodeURIComponent(file.name)}});
+    if(!r.ok){let d={};try{d=await r.json()}catch(e){}throw Object.assign(new Error(d.error||'تعذّر الحفظ'),{status:r.status})}
     closeModal();await load();
   }catch(err){
     m.textContent=err.status===401?'كلمة السر غير صحيحة':(err.message||'تعذّر الحفظ، حاولي مرة أخرى');
@@ -361,7 +360,7 @@ $('#form').onsubmit=async e=>{
 async function removeWork(id){
   const w=works.find(x=>x.id===id);sure=null;
   if(!w)return;
-  try{await api('work-delete',{id,password:pw});pw=''}catch(e){alert(e.status===401?'كلمة السر غير صحيحة':'تعذّر الحذف')}
+  try{await api('delete',{id,password:pw});pw=''}catch(e){alert(e.status===401?'كلمة السر غير صحيحة':'تعذّر الحذف')}
   await load();
 }
 
